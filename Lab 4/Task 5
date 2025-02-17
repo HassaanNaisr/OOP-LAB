@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Book
+{
+private:
+    static int bookCounter;
+    int bookID;
+    string title;
+    float price;
+    int *stock;
+    float discountPercentage;
+
+public:
+    Book(string bookTitle, float bookPrice, int bookStock, float discount = 0.0)
+        : bookID(++bookCounter), title(bookTitle), price(bookPrice), discountPercentage(discount)
+    {
+        if (bookStock >= 0)
+        {
+            this->stock = new int(bookStock);
+        }
+        else
+        {
+            this->stock = new int(0);
+        }
+    }
+
+    Book(const Book &other)
+        : bookID(++bookCounter), title(other.title), price(other.price), discountPercentage(other.discountPercentage)
+    {
+        this->stock = new int(*other.stock);
+    }
+
+    ~Book()
+    {
+        cout << "Destroying book" << bookID << " " << title << endl;
+        delete stock;
+    }
+
+    void updateDetails(const string &bookTitle, float bookPrice, float discount)
+    {
+        this->title = bookTitle;
+        this->price = bookPrice;
+        this->discountPercentage = discount;
+    }
+
+    float calculatePrice(int quantity)
+    {
+        float finalPrice = this->price;
+        if (quantity > 10)
+        {
+            finalPrice -= finalPrice * 0.10;
+        }
+        else if (quantity > 5)
+        {
+            finalPrice -= finalPrice * 0.05;
+        }
+
+        finalPrice -= finalPrice * (this->discountPercentage / 100);
+        return finalPrice * quantity;
+    }
+
+    void purchaseBook()
+    {
+        int num;
+        cout << "How many copies of" << title << "would you like to buy (1-" << *stock << "): ";
+        cin >> num;
+
+        if (num > *stock || num <= 0)
+        {
+            cout << "Invalid purchase, Only" << *stock << "copies available" << endl;
+            return;
+        }
+
+        float totalCost = calculatePrice(num);
+        *stock -= num;
+
+        cout << "Purchase successful, Total cost $" << totalCost << endl;
+        cout << "Remaining stock" << *stock << "copies" << endl;
+
+        if (*stock < 5)
+        {
+            cout << "Warning, Low stock level" << endl;
+        }
+    }
+
+    void displayDetails() const
+    {
+        cout << "Book ID" << bookID << ", Title" << title << ", Price $" << price << ", Discount" << discountPercentage << "%, Stock" << *stock << endl;
+    }
+};
+
+int Book::bookCounter = 0;
+
+int main()
+{
+    Book book1("Harry Potter", 34.56, 30, 5);
+    Book book2("The Chronicles", 24.56, 20, 10);
+
+    cout << "Book Details" << endl;
+    book1.displayDetails();
+    book2.displayDetails();
+
+    Book copiedBook = book1;
+    cout << "Copied Book Details" << endl;
+    copiedBook.displayDetails();
+
+    book1.updateDetails("Harry Potter - Updated Edition", 40.99, 15);
+    cout << "Updated Book Details" << endl;
+    book1.displayDetails();
+
+    book1.purchaseBook();
+    book2.purchaseBook();
+
+    return 0;
+}
