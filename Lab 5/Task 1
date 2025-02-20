@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string.h>
+#include "string"
+
+using namespace std;
+
+class car
+{
+private:
+    int regNum;
+    int model;
+    string name;
+
+public:
+    car(string n, int reg, int mod)
+    {
+        name = n;
+        regNum = reg;
+        model = mod;
+    }
+
+    car(car &obj, string n)
+    {
+        name = n;
+        regNum = obj.regNum;
+        model = obj.model;
+    }
+
+    display()
+    {
+        cout << "Car name : " << name << endl;
+        cout << "Car registration number : " << regNum << endl;
+        cout << "Car model : " << model << endl;
+    }
+};
+
+int main()
+{
+    car car1("Toyota", 1234, 123);
+    car car2("Toyota", 2345, 234);
+
+    car car3(car1, "Lambo");
+    car car4(car2, "Ford");
+
+    car1.display();
+    car2.display();
+    car3.display();
+    car4.display();
+}
