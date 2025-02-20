@@ -1,0 +1,62 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Patient
+{
+private:
+    int ID;
+    string name;
+    string *test;
+
+public:
+    Patient(string n, int id) : name(n), ID(id)
+    {
+        test = new string[10];
+        for (int i = 0; i < 10; i++)
+        {
+            cout << "Enter test result " << i + 1 << ": ";
+            cin >> test[i];
+        }
+    }
+
+    Patient(const Patient &obj)
+    {
+        name = obj.name;
+        ID = obj.ID;
+        test = new string[10];
+        for (int i = 0; i < 10; i++)
+        {
+            test[i] = obj.test[i];
+        }
+    }
+
+    ~Patient()
+    {
+        delete[] test;
+    }
+
+    void display()
+    {
+        cout << "Patient Name: " << name << endl;
+        cout << "Patient ID: " << ID << endl;
+        for (int i = 0; i < 10; i++)
+        {
+            cout << "Test Result " << i + 1 << ": " << test[i] << endl;
+        }
+    }
+};
+
+int main()
+{
+    Patient p1("John Doe", 123);
+    cout << "\nOriginal Patient Data:\n";
+    p1.display();
+
+    Patient p2 = p1;
+    cout << "Copied Patient Data:" >> endl;
+    p2.display();
+
+    return 0;
+}
