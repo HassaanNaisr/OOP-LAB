@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Battery 
+{
+private:
+    int capacity; 
+
+public:
+    Battery(int cap)
+    {
+        capacity = cap;
+    }  
+
+    void displayDetails()  
+    {
+        cout << "Battery Capacity: " << capacity << " mAh" << endl;
+    }
+};
+
+class Smartphone 
+{
+private:
+    string modelName;
+    Battery battery; 
+
+public:
+    Smartphone(string model, int batteryCapacity) : battery(batteryCapacity)
+    {
+        modelName = model;
+    } 
+
+    void display()  
+    {
+        cout << "Smartphone Model: " << modelName << endl;
+        battery.displayDetails();
+    }
+};
+
+int main() 
+{
+    Smartphone phone1("iPhone 12", 5000);
+    phone1.display();
+
+    return 0;
+}
