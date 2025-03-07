@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+class Device
+{
+    protected:
+    int deviceID;
+    bool status;
+
+    public:
+    Device(int id, bool stat) : deviceID(id), status(stat) {}
+
+    virtual void displayDetails()
+    {
+        cout << "Device ID: " << deviceID << endl;
+        cout << "Status: " << (status ? "ON" : "OFF") << endl;
+    }
+};
+
+class SmartPhone : public Device
+{
+    protected:
+    float screenSize;
+
+    public:
+    SmartPhone(int id, bool stat, float size) : Device(id, stat), screenSize(size) {}
+
+    void displayDetails() override
+    {
+        Device::displayDetails();
+        cout << "Screen Size: " << screenSize << " inches" << endl;
+    }
+};
+
+class SmartWatch : public SmartPhone
+{
+    protected:
+    bool heartRateMonitor;
+
+    public:
+    SmartWatch(int id, bool stat, float size, bool hrm) : SmartPhone(id, stat, size), heartRateMonitor(hrm) {}
+
+    void displayDetails() override
+    {
+        SmartPhone::displayDetails();
+        cout << "Heart Rate Monitor: " << (heartRateMonitor ? "Enabled" : "Disabled") << endl;
+    }
+};
+
+class SmartWearable : public SmartWatch
+{
+    int stepCounter;
+
+    public:
+    SmartWearable(int id, bool stat, float size, bool hrm, int steps) : SmartWatch(id, stat, size, hrm), stepCounter(steps) {}
+
+    void displayDetails() override
+    {
+        SmartWatch::displayDetails();
+        cout << "Step Counter: " << stepCounter << " steps" << endl;
+    }
+};
+
+int main()
+{
+    SmartWearable wearable(101, true, 5.5, true, 12000);
+
+    cout << "Smart Wearable Details:" << endl;
+    wearable.displayDetails();
+
+    return 0;
+}
