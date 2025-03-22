@@ -1,0 +1,176 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Account
+{
+protected:
+    int AccNumber;
+    float balance;
+    string AccHolderName;
+
+public:
+    Account(int AN, float b, string AHN) : AccNumber(AN), balance(b), AccHolderName(AHN) {}
+
+    void deposit(float amount)
+    {
+        balance = balance + amount;
+        cout << "Amount added to balance" << endl;
+    }
+
+    virtual void remove(float amount)
+    {
+        if (amount <= balance)
+        {
+            balance = balance - amount;
+            cout << "Amount withdrawn" << endl;
+        }
+        else
+        {
+            cout << "Not enough balance in the account" << endl;
+        }
+    }
+
+    virtual void CalcInterest()
+    {
+        cout << "Interest is : " << balance * 0.03 << endl;  
+    }
+
+    virtual void Printstatement()
+    {
+        cout << "Transaction history:" << endl;
+    }
+
+    void Getinfo()
+    {
+        cout << "Account number : " << AccNumber << endl;
+        cout << "Account Balance : " << balance << endl;
+        cout << "Account Holder Name : " << AccHolderName << endl;
+    }
+};
+
+class SavingsAccount : public Account
+{
+private:
+    float InterestRate;
+    float minimumBalance;
+
+public:
+    SavingsAccount(int AN, float b, string AHN, float IR, float mB)
+        : Account(AN, b, AHN), InterestRate(IR), minimumBalance(mB) {}
+
+    void CalcInterest() override
+    {
+        cout << "Interest is : " << (InterestRate * balance) << endl;
+    }
+
+    void Printstatement() override
+    {
+        cout << "Transaction history for Savings Account:" << endl;
+    }
+
+    void remove(float amount) override
+    {
+        if (balance - amount >= minimumBalance)
+        {
+            balance = balance - amount;
+            cout << "Amount withdrawn" << endl;
+        }
+        else
+        {
+            cout << "Withdrawal would cause balance to fall below minimum balance" << endl;
+        }
+    }
+};
+
+class CheckingAccount : public Account
+{
+private:
+    float overdraftLimit;
+
+public:
+    CheckingAccount(int AN, float b, string AHN, float overdraftLimit)
+        : Account(AN, b, AHN), overdraftLimit(overdraftLimit) {}
+
+    void CalcInterest() override
+    {
+        cout << "Interest is : " << (balance * 0.01) << endl;  
+    }
+
+    void Printstatement() override
+    {
+        cout << "Transaction history for Checking Account:" << endl;
+    }
+
+    void remove(float amount) override
+    {
+        if (balance + overdraftLimit >= amount)
+        {
+            balance = balance - amount;  
+            cout << "Amount withdrawn" << endl;
+        }
+        else
+        {
+            cout << "Overdraft limit exceeded, withdrawal not allowed." << endl;
+        }
+    }
+};
+
+class FixedDepositAccount : public Account
+{
+private:
+    float fixedInterestRate;
+    string maturityDate;
+
+public:
+    FixedDepositAccount(int AN, float b, string AHN, float fixedIR, string mDate)
+        : Account(AN, b, AHN), fixedInterestRate(fixedIR), maturityDate(mDate) {}
+
+    void CalcInterest() override
+    {
+        cout << "Interest is : " << (fixedInterestRate * balance) << endl;
+    }
+
+    void Printstatement() override
+    {
+        cout << "Transaction history for Fixed Deposit Account:" << endl;
+    }
+
+    void remove(float amount) override
+    {
+        cout << "Withdrawal not allowed before maturity date: " << maturityDate << endl;
+    }
+};
+
+int main()
+{
+    Account *acc1 = new SavingsAccount(101, 1000.0, "Ammar", 0.05, 500.0);
+    acc1->Getinfo();
+    acc1->deposit(500.0);
+    acc1->remove(200.0);
+    acc1->CalcInterest();
+    acc1->Printstatement();
+
+    cout << endl;
+
+    Account *acc2 = new CheckingAccount(102, 2000.0, "Jafar", 500.0);
+    acc2->Getinfo();
+    acc2->deposit(300.0);
+    acc2->remove(2300.0);
+    acc2->CalcInterest();
+    acc2->Printstatement();
+
+    cout << endl;
+
+    Account *acc3 = new FixedDepositAccount(103, 5000.0, "Jabbar", 0.07, "2025-03-17");
+    acc3->Getinfo();
+    acc3->CalcInterest();
+    acc3->remove(1000.0);
+    acc3->Printstatement();
+
+    delete acc1;
+    delete acc2;
+    delete acc3;
+
+    return 0;
+}
