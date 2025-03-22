@@ -1,0 +1,136 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Media
+{
+    protected:
+    string title;
+    string publicationDate;
+    string uniqueID;
+    string publisher;
+    
+    public:
+    Media(string t, string pDate, string uID, string pub) : title(t), publicationDate(pDate), uniqueID(uID), publisher(pub) {}
+    
+    virtual void displayInfo()
+    {
+        cout << "Displaying Media Details:" << endl;
+        cout << "Title: " << title << endl;
+        cout << "Publication Date: " << publicationDate << endl;
+        cout << "Unique ID: " << uniqueID << endl;
+        cout << "Publisher: " << publisher << endl;
+    }
+    
+    void checkOut()
+    {
+        cout << title << " has been checked out." << endl;
+    }
+    
+    void returnItem()
+    {
+        cout << title << " has been returned." << endl;
+    }
+};
+
+class Book : public Media
+{
+    protected:
+    string author;
+    string ISBN;
+    int numberOfPages;
+    
+    public:
+    Book(string t, string pDate, string uID, string pub, string a, string isbn, int pages) 
+        : Media(t, pDate, uID, pub), author(a), ISBN(isbn), numberOfPages(pages) {}
+    
+    void displayInfo() override
+    {
+        Media::displayInfo();
+        cout << "Book Details:" << endl;
+        cout << "Author: " << author << endl;
+        cout << "ISBN: " << ISBN << endl;
+        cout << "Number of Pages: " << numberOfPages << endl;
+    }
+};
+
+class DVD : public Media
+{
+    protected:
+    string director;
+    int duration;
+    string rating;
+    
+    public:
+    DVD(string t, string pDate, string uID, string pub, string d, int dur, string r) 
+        : Media(t, pDate, uID, pub), director(d), duration(dur), rating(r) {}
+    
+    void displayInfo() override
+    {
+        Media::displayInfo();
+        cout << "DVD Details:" << endl;
+        cout << "Director: " << director << endl;
+        cout << "Duration: " << duration << " mins" << endl;
+        cout << "Rating: " << rating << endl;
+    }
+};
+
+class CD : public Media
+{
+    protected:
+    string artist;
+    int numberOfTracks;
+    string genre;
+    
+    public:
+    CD(string t, string pDate, string uID, string pub, string a, int tracks, string g) 
+        : Media(t, pDate, uID, pub), artist(a), numberOfTracks(tracks), genre(g) {}
+    
+    void displayInfo() override
+    {
+        Media::displayInfo();
+        cout << "CD Details:" << endl;
+        cout << "Artist: " << artist << endl;
+        cout << "Number of Tracks: " << numberOfTracks << endl;
+        cout << "Genre: " << genre << endl;
+    }
+};
+
+class Magazine : public Media
+{
+    protected:
+    int issueNumber;
+    
+    public:
+    Magazine(string t, string pDate, string uID, string pub, int issue) 
+        : Media(t, pDate, uID, pub), issueNumber(issue) {}
+    
+    void displayInfo() override
+    {
+        Media::displayInfo();
+        cout << "Magazine Details:" << endl;
+        cout << "Issue Number: " << issueNumber << endl;
+    }
+};
+
+int main()
+{
+    Book b("C++ Programming", "2023", "B123", "Tech Publishers", "Jafar smith", "123456789", 500);
+    DVD d("Inception", "2010", "D123", "Warner Bros", "Christopher Nolan", 148, "PG-13");
+    CD c("Thriller", "1982", "C123", "Karachi Records", "Michael Jackson", 9, "Pop");
+    Magazine m("National Geographic", "2024", "M123", "NationalGeo", 150);
+    
+    b.displayInfo();
+    d.displayInfo();
+    c.displayInfo();
+    m.displayInfo();
+    
+    b.checkOut();
+    d.returnItem();
+    
+    return 0;
+}
