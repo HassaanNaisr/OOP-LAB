@@ -1,0 +1,144 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person
+{
+protected:
+    string name;
+    string address;
+    double phone;
+    string email;
+
+public:
+    string id;
+    
+    Person(string n, string i, string a, double p, string e) : name(n), id(i), address(a), phone(p), email(e) {}
+
+    virtual void displayInfo()
+    {
+        cout << "Displaying Person Details:" << endl;
+        cout << "Name: " << name << endl;
+        cout << "ID: " << id << endl;
+        cout << "Address: " << address << endl;
+        cout << "Phone number: " << phone << endl;
+        cout << "Email: " << email << endl;
+    }
+
+    void updateInfo(string n, string i, string a, double p, string e)
+    {
+        name = n;
+        id = i;
+        address = a;
+        phone = p;
+        email = e;
+        cout << "Details modified" << endl;
+    }
+};
+
+class Student : public Person
+{
+protected:
+    int coursesEnrolled;
+    float GPA;
+    string enrollmentYear;
+
+public:
+    Student(string n, string i, string a, double p, string e, int c, float g, string y) 
+        : Person(n, i, a, p, e), coursesEnrolled(c), GPA(g), enrollmentYear(y) {}
+
+    void displayInfo() override
+    {
+        Person::displayInfo();
+        cout << "Student Details:" << endl;
+        cout << "Courses Enrolled: " << coursesEnrolled << endl;
+        cout << "GPA: " << GPA << endl;
+        cout << "Enrollment Year: " << enrollmentYear << endl;
+    }
+};
+
+class Professor : public Person
+{
+protected:
+    string department;
+    string coursesTaught;
+    double salary;
+
+public:
+    Professor(string n, string i, string a, double p, string e, string d, string c, double s) 
+        : Person(n, i, a, p, e), department(d), coursesTaught(c), salary(s) {}
+
+    void displayInfo() override
+    {
+        Person::displayInfo();
+        cout << "Professor Details:" << endl;
+        cout << "Department: " << department << endl;
+        cout << "Courses Taught: " << coursesTaught << endl;
+        cout << "Salary: " << salary << " PKR" << endl;
+    }
+};
+
+class Staff : public Person
+{
+protected:
+    string department;
+    string position;
+    double salary;
+
+public:
+    Staff(string n, string i, string a, double p, string e, string d, string pos, double s) 
+        : Person(n, i, a, p, e), department(d), position(pos), salary(s) {}
+
+    void displayInfo() override
+    {
+        Person::displayInfo();
+        cout << "Staff Details:" << endl;
+        cout << "Department: " << department << endl;
+        cout << "Position: " << position << endl;
+        cout << "Salary: " << salary << " PKR" << endl;
+    }
+};
+
+class Course
+{
+private:
+    string courseId;
+    string courseName;
+    int credits;
+    string instructor;
+    string schedule;
+
+public:
+    Course(string id, string name, int c, string instr, string sched) 
+        : courseId(id), courseName(name), credits(c), instructor(instr), schedule(sched) {}
+
+    void registerStudent(Student &student)
+    {
+        cout << "Student " << student.id << " registered for course: " << courseName << endl;
+    }
+
+    void displayCourseInfo()
+    {
+        cout << "Course ID: " << courseId << endl;
+        cout << "Course Name: " << courseName << endl;
+        cout << "Credits: " << credits << endl;
+        cout << "Instructor: " << instructor << endl;
+        cout << "Schedule: " << schedule << endl;
+    }
+};
+
+int main()
+{
+    Student s("Ali Khan", "S123", "Karachi, Pakistan", 923001234567, "alikhan@gmail.com", 5, 3.8, "2023");
+    Professor p("Dr. Ahmed", "P456", "Lahore, Pakistan", 923002345678, "drahmed@gmail.com", "Computer Science", "Data Structures", 200000);
+    Staff st("Ayesha Raza", "ST789", "Islamabad, Pakistan", 923003456789, "ayesharaza@gmail.com", "Administration", "Manager", 150000);
+    Course c("CS101", "Programming Basics", 3, "Dr. Ahmed", "Mon-Wed 10:00 AM");
+
+    s.displayInfo();
+    p.displayInfo();
+    st.displayInfo();
+    c.displayCourseInfo();
+    c.registerStudent(s);
+
+    return 0;
+}
