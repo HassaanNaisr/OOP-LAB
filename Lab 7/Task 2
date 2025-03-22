@@ -1,0 +1,146 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Shape {
+protected:
+    double positionX;
+    double positionY;
+    string color;
+    double borderThickness;
+
+public:
+    Shape(double x, double y, string c, double border = 1.0)
+        : positionX(x), positionY(y), color(c), borderThickness(border) {}
+
+    virtual void draw() = 0;
+    virtual double calculateArea() = 0;
+    virtual double calculatePerimeter() = 0;
+
+    void setPosition(double x, double y) {
+        positionX = x;
+        positionY = y;
+    }
+
+    void setColor(string c) {
+        color = c;
+    }
+
+    void setBorderThickness(double thickness) {
+        borderThickness = thickness;
+    }
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+
+public:
+    Circle(double x, double y, string c, double r, double border = 1.0)
+        : Shape(x, y, c, border), radius(r) {}
+
+    void draw() override {
+        cout << "Drawing a Circle at (" << positionX << ", " << positionY << ") with radius " << radius << " and color " << color << endl;
+    }
+
+    double calculateArea() override {
+        return 3.14159 * radius * radius;
+    }
+
+    double calculatePerimeter() override {
+        return 2 * 3.14159 * radius;
+    }
+};
+
+class Rectangle : public Shape {
+private:
+    double width;
+    double height;
+
+public:
+    Rectangle(double x, double y, string c, double w, double h, double border = 1.0)
+        : Shape(x, y, c, border), width(w), height(h) {}
+
+    void draw() override {
+        cout << "Drawing a Rectangle at (" << positionX << ", " << positionY << ") with width " << width << " and height " << height << " and color " << color << endl;
+    }
+
+    double calculateArea() override {
+        return width * height;
+    }
+
+    double calculatePerimeter() override {
+        return 2 * (width + height);
+    }
+};
+
+class Triangle : public Shape {
+private:
+    double base;
+    double height;
+
+public:
+    Triangle(double x, double y, string c, double b, double h, double border = 1.0)
+        : Shape(x, y, c, border), base(b), height(h) {}
+
+    void draw() override {
+        cout << "Drawing a Triangle at (" << positionX << ", " << positionY << ") with base " << base << " and height " << height << " and color " << color << endl;
+    }
+
+    double calculateArea() override {
+        return 0.5 * base * height;
+    }
+
+    double calculatePerimeter() override {
+        double side = (base / 2) + height;
+        return base + 2 * side;
+    }
+};
+
+class Polygon : public Shape {
+private:
+    double sideLength;
+    int numberOfSides;
+
+public:
+    Polygon(double x, double y, string c, double side, int sides, double border = 1.0)
+        : Shape(x, y, c, border), sideLength(side), numberOfSides(sides) {}
+
+    void draw() override {
+        cout << "Drawing a Polygon at (" << positionX << ", " << positionY << ") with " << numberOfSides << " sides of length " << sideLength << " and color " << color << endl;
+    }
+
+    double calculateArea() override {
+        if (numberOfSides < 3) return 0;
+        return 0;
+    }
+
+    double calculatePerimeter() override {
+        return sideLength * numberOfSides;
+    }
+};
+
+int main() {
+    Circle circle(0, 0, "Red", 5.0);
+    circle.draw();
+    cout << "Area: " << circle.calculateArea() << endl;
+    cout << "Perimeter: " << circle.calculatePerimeter() << endl;
+
+    Rectangle rectangle(10, 10, "Blue", 4.0, 6.0);
+    rectangle.draw();
+    cout << "Area: " << rectangle.calculateArea() << endl;
+    cout << "Perimeter: " << rectangle.calculatePerimeter() << endl;
+
+    Triangle triangle(20, 20, "Green", 6.0, 8.0);
+    triangle.draw();
+    cout << "Area: " << triangle.calculateArea() << endl;
+    cout << "Perimeter: " << triangle.calculatePerimeter() << endl;
+
+    Polygon polygon(30, 30, "Yellow", 4.0, 5);
+    polygon.draw();
+    cout << "Area: " << polygon.calculateArea() << endl;
+    cout << "Perimeter: " << polygon.calculatePerimeter() << endl;
+
+    return 0;
+}
