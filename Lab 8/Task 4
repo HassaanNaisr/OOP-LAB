@@ -39,40 +39,48 @@ public:
         return *this;
     }
 
-    void display() const
+    bool operator==(const Currency &other) const
     {
-        cout << "Amount: " << amount << endl;
+        return amount == other.amount;
+    }
+
+    friend ostream &operator<<(ostream &out, const Currency &c)
+    {
+        out << "Amount: " << c.amount;
+        return out;
     }
 };
 
 int main()
 {
-    Currency c1(100.0f);
-    Currency c2(40.5f);
+    Currency price(150.0f);
+    Currency discount(20.0f);
+    Currency tax(15.0f);
+    Currency finalAmount = price - discount + tax;
 
-    cout << "Initial Values:\n";
-    c1.display();
-    c2.display();
+    cout << "Original Price: " << price << endl;
+    cout << "Discount: " << discount << endl;
+    cout << "Tax: " << tax << endl;
+    cout << "Final Amount after applying discount and tax: " << finalAmount << endl;
 
-    Currency sum = c1 + c2;
-    cout << "\nAfter Addition:\n";
-    sum.display();
+    Currency temp = finalAmount;
+    temp -= Currency(10.0f);
+    cout << "After applying additional 10 unit discount: " << temp << endl;
 
-    Currency diff = c1 - c2;
-    cout << "\nAfter Subtraction:\n";
-    diff.display();
+    Currency comparison(155.0f);
+    cout << "Is finalAmount equal to 155? ";
+    if (finalAmount == comparison)
+    {
+        cout << "Yes" << endl;
+    }
+    else
+    {
+        cout << "No" << endl;
+    }
 
-    Currency neg = -c1;
-    cout << "\nNegation of c1:\n";
-    neg.display();
-
-    c1 += c2;
-    cout << "\nAfter c1 += c2:\n";
-    c1.display();
-
-    c1 -= Currency(30.0f);
-    cout << "\nAfter c1 -= 30:\n";
-    c1.display();
+    Currency negative = -finalAmount;
+    cout << "Negated final amount: " << negative << endl;
 
     return 0;
 }
+
