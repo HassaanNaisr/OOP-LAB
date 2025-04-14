@@ -1,0 +1,128 @@
+#include <iostream>
+using namespace std;
+
+class SmartDevice
+{
+public:
+    virtual void turnOn() = 0;  
+    virtual void turnOff() = 0;  
+    virtual void getStatus() = 0;
+};
+
+class LightBulb : public SmartDevice
+{
+public:
+    bool isOn;
+    int brightness;
+
+    LightBulb(int b) : brightness(b), isOn(false) {}
+
+    void turnOn() override
+    {
+        if (isOn == false)
+        {
+            cout << "Light turned on" << endl;
+            isOn = true;
+        }
+        else
+        {
+            cout << "Light already on" << endl;
+        }
+    }
+
+    void turnOff() override
+    {
+        if (isOn == true)
+        {
+            cout << "Light turned off" << endl;
+            isOn = false;
+        }
+        else
+        {
+            cout << "Light already off" << endl;
+        }
+    }
+
+    void getStatus() override
+    {
+        cout << "Light status : ";
+        if (isOn == false)
+        {
+            cout << "Off" << endl;
+        }
+        else
+        {
+            cout << "On" << endl;
+        }
+    }
+};
+
+class ThermoStat : public SmartDevice
+{
+public:
+    bool isOn;
+    double temperature;
+
+    ThermoStat(int t) : temperature(t), isOn(false) {}
+
+    void turnOn() override
+    {
+        if (isOn == false)
+        {
+            cout << "ThermoStat now activated" << endl;
+            isOn = true;
+        }
+        else
+        {
+            cout << "ThermoStat Already active" << endl;
+        }
+    }
+
+    void turnOff() override
+    {
+        if (isOn == true)
+        {
+            cout << "Thermostat deactivated" << endl;
+            isOn = false;
+        }
+        else
+        {
+            cout << "ThermoStat already deactivated" << endl;
+        }
+    }
+
+    void getStatus() override
+    {
+        cout << "ThermoStat status : ";
+        if (isOn == false)
+        {
+            cout << "Off" << endl;
+        }
+        else
+        {
+            cout << "On" << endl;
+        }
+    }
+};
+
+
+int main()
+{
+    LightBulb bulb(75); 
+
+    bulb.getStatus();
+    bulb.turnOn();
+    bulb.getStatus();
+    bulb.turnOff();
+    bulb.getStatus();
+
+    ThermoStat thermo(56); 
+
+    bulb.getStatus();
+    bulb.turnOn();
+    bulb.getStatus();
+    bulb.turnOff();
+    bulb.getStatus();
+
+    return 0;
+}
