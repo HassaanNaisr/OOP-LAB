@@ -1,0 +1,83 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+int main() 
+{
+    ifstream inFile("vehicles.txt");
+
+    if (!inFile.is_open()) 
+    {
+        cerr << "Error: Could not open the file 'vehicles.txt'" << endl;
+        return 1;
+    }
+
+    string line;
+    while (getline(inFile, line)) 
+    {
+        if (line.empty()) continue;
+        if (line.substr(0, 2) == "//") continue;
+
+        istringstream ss(line);
+
+        string type, id, name, yearStr, extraData, cert;
+        getline(ss, type, ',');
+        getline(ss, id, ',');
+        getline(ss, name, ',');
+        getline(ss, yearStr, ',');
+        getline(ss, extraData, ',');
+        getline(ss, cert, ',');
+
+        int year = stoi(yearStr); 
+
+        cout << "Type: " << type << ", ID: " << id << ", Year: " << year << endl;
+
+        size_t colonPosition = extraData.find(':');
+        if (colonPosition != string::npos) 
+        {
+            string numberPart = extraData.substr(colonPosition + 1); 
+
+            if (type == "AutonomousCar") 
+            {
+                float softwareVersion = stof(numberPart); 
+                cout << "Software Version: " << softwareVersion << endl;
+            } 
+            else if (type == "ElectricVehicle") 
+            {
+                int batteryCapacity = stoi(numberPart);  
+                cout << "Battery Capacity: " << batteryCapacity << " kWh" << endl;
+            }
+            else if (type == "HybridTruck") 
+            {
+                size_t pipePosition = extraData.find('|');  
+                if (pipePosition != string::npos) 
+                {
+                    string cargoStr = extraData.substr(colonPosition + 1, pipePosition - colonPosition - 1);  // Extract Cargo value
+                    string batteryStr = extraData.substr(pipePosition + 1);  
+
+                    try {
+                        int cargo = stoi(cargoStr);  
+                        int battery = stoi(batteryStr);  
+                        cout << "Cargo: " << cargo << " kg, Battery: " << battery << " kWh" << endl;
+                    } catch (const invalid_argument& e) {
+                        cout << "Error converting Cargo or Battery for HybridTruck" << endl;
+                    }
+                } 
+                else 
+                {
+                    cout << "Invalid format for HybridTruck ExtraData: Missing pipe symbol '|'" << endl;
+                }
+            }
+        } 
+        else 
+        {
+            cout << "ExtraData format invalid (no colon found)" << endl;
+        }
+    }
+
+    inFile.close();
+    return 0;
+}
