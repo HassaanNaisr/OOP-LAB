@@ -32,13 +32,6 @@ int main()
         getline(ss, extraData, ',');
         getline(ss, cert, ',');
 
-        auto trim = [](string &s) {
-            size_t start = s.find_first_not_of(" \t");
-            size_t end = s.find_last_not_of(" \t");
-            s = (start == string::npos) ? "" : s.substr(start, end - start + 1);
-        };
-        trim(type); trim(id); trim(name); trim(year); trim(extraData); trim(cert);
-
         cout << "Type: " << type << endl;
         cout << "ID: " << id << endl;
         cout << "Name: " << name << endl;
