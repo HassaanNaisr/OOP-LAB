@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    ifstream in("large_log.txt");
+    if (!in)
+    {
+        cerr << "Error opening file" << endl;
+        return 1;
+    }
+
+    string content;
+
+    getline(in, content);
+    streampos pos = in.tellg();
+    cout << "Current position after reading the first line: " << pos << endl;
+
+    getline(in, content);
+    streampos pos2 = in.tellg();
+    cout << "Current position after reading the second line: " << pos2 << endl;
+
+    in.close();
+    
+    return 0;
+}
