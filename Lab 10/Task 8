@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    fstream file("config.txt", ios::in | ios::out);
+    if (!file)
+    {
+        cerr << "Error opening file" << endl;
+        return 1;
+    }
+
+    file.seekp(5);
+    file << "XXXXX";
+    file.close();
+
+    ifstream in("config.txt");
+    if (!in)
+    {
+        cerr << "Error opening file" << endl;
+        return 1;
+    }
+
+    string content;
+    getline(in, content);
+    cout << content;
+    in.close();
+    return 0;
+}
