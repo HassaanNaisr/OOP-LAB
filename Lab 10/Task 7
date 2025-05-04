@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() 
+{
+    ofstream outFile;
+
+    outFile.open("sensorlog.txt");
+
+    if (!outFile) 
+    {
+        cerr << "Error opening file" << endl;
+        return 1;
+    }
+
+    outFile << "Temperature: 25.5 C\n";
+    streampos pos1 = outFile.tellp(); 
+    cout << "Position after first write: " << pos1 << endl;
+
+    outFile << "Humidity: 60%\n";
+    streampos pos2 = outFile.tellp(); 
+    cout << "Position after second write: " << pos2 << endl;
+
+    outFile << "Pressure: 1013 Pa\n";
+    streampos pos3 = outFile.tellp(); 
+    cout << "Position after third write: " << pos3 << endl;
+    outFile.close();
+
+    return 0;
+}
+
